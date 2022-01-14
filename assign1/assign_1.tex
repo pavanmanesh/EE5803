@@ -33,9 +33,10 @@
 \usepackage[breaklinks=true]{hyperref}
 \usepackage{graphicx}
 \usepackage{tkz-euclide}
-
+\usetikzlibrary{karnaugh}
 \usetikzlibrary{calc,math}
 \usepackage{listings}
+\usepackage{karnaugh-map}
     \usepackage{color}                                            %%
     \usepackage{array}                                            %%
     \usepackage{longtable}                                        %%
@@ -127,7 +128,7 @@ columns=fullflexible
      \def\topbox#1{\raisebox{-\baselineskip}[0in][0in]{#1}}
      \def\midbox#1{\raisebox{-0.5\baselineskip}[0in][0in]{#1}}
 \vspace{3cm}
-\title{Assignment 1}
+\title{Assignment-1}
 \author{M Pavan Manesh - EE20MTECH14017}
 \maketitle
 \bigskip
@@ -144,33 +145,26 @@ Verify the following using Boolean Laws.
 \begin{align}
     A^{'}+B^{'}.C=A^{'}.B^{'}.C^{'}+A^{'}.B.C^{'}+A^{'}.B.C+A^{'}.B^{'}.C+A.B^{'}.C \nonumber
 \end{align}
-\section{\textbf{Boolean Laws Used}}
-\begin{itemize}
-    \item Complement Law: 
-    \begin{align}
-        X+X^{'}=1\label{1}
-    \end{align}
-    \item Distributive Law:
-    \begin{align}
-        X+Y.Z=(X+Y).(X+Z)\label{2}
-    \end{align}
-\end{itemize}
 \section{\textbf{Solution}}
-Consider the right hand side of the given problem:
-\begin{align}
- \text{RHS}
- &=A^{'}.B^{'}.C^{'}+A^{'}.B.C^{'}+A^{'}.B.C+A^{'}.B^{'}.C+A.B^{'}.C \\
- &=A^{'}.B^{'}.C^{'}+A^{'}.B(C^{'}+C)+A^{'}.B^{'}.C+A.B^{'}.C \\
- &=A^{'}.B^{'}.C^{'}+A^{'}.B+A^{'}.B^{'}.C+A.B^{'}.C\hspace{0.2cm}\{\text{Using \eqref{1}}\}\\
- &=A^{'}.B+A^{'}.B^{'}(C^{'}+C)+A.B^{'}.C\\
- &=A^{'}.B+A^{'}.B^{'}+A.B^{'}.C\hspace{0.2cm}\{\text{Using \eqref{1}}\}\\
- &=A^{'}(B+B^{'})+A.B^{'}.C\\
- &=A^{'}+A.B^{'}.C\hspace{0.2cm}\{\text{Using \eqref{1}}\}\\
- &=(A^{'}+A)(A^{'}+B^{'}.C)\hspace{0.2cm}\{\text{Using \eqref{2}}\}\\
- &=A^{'}+B^{'}.C\hspace{0.2cm}\{\text{Using \eqref{1}}\}\\
- &=\text{LHS}\nonumber
-\end{align}
+From the Figure \ref{fig:kmap},We can see that the right hand side expression is simplified to that of left side expression.
+\begin{figure}[h!]
+    \centering
+    \begin{karnaugh-map}[4][2][1][][]
+        
+        \minterms{0,1,2,3,5}
+        \maxterms{4,6,7}
+        \implicant{0}{2}
+        \implicant{1}{5}
+        \draw[color=black, ultra thin] (0, 2) --
+        node [pos=0.7, above right, anchor=south west] {$BC$} % Y label
+        node [pos=0.7, below left, anchor=north east] {$A$} % X label
+        ++(135:1);
+    \end{karnaugh-map}
+    \caption{K-Map}
+    \label{fig:kmap}
+\end{figure}
 \section{\textbf{Truth Table}}
+The truth table corresponding to the given expression:
 \begin{table}[h]
     \centering
     \begin{tabular}{|c|c|c|c|c|}
@@ -188,5 +182,10 @@ Consider the right hand side of the given problem:
     \hline
     \end{tabular}
     \caption{Truth Table}
+    \label{table}
 \end{table}
+\section{\textbf{Implementation Using NAND Logic}}
+\begin{align}
+    \overline{A}+\overline{B}.C=\overline{\overline{\overline{A}+\overline{B}.C}}=\overline{\overline{\overline{A}}.(\overline{\overline{B}.C})}=\overline{A.(\overline{\overline{B}.C})}
+\end{align}
 \end{document}
