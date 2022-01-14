@@ -1,10 +1,14 @@
 #include<stdio.h>
 #include<stdbool.h>
+bool NAND(bool a, bool b)
+{
+   return !(a&&b);
+}
 int main()
 {
-bool a=false,b,c,lhs,rhs;
+bool a=false,b,c,lhs,rhs,nand;
 int i,j,k;
-printf("A B C LHS RHS\n");
+printf("A B C LHS RHS NAND\n");
 for(i=0;i<=1;i++)
 {
     b=false;
@@ -15,7 +19,8 @@ for(i=0;i<=1;i++)
         {
             lhs=(!a)||(!b&&c);
             rhs=(!a&&!b&&!c)+(!a&&b&&!c)+(!a&&b&&c)+(!a&&!b&&c)+(a&&!b&&c);
-            printf("%d %d %d  %d   %d\n",a,b,c,lhs,rhs);
+            nand=NAND(NAND(!b,c),a);
+            printf("%d %d %d  %d   %d   %d\n",a,b,c,lhs,rhs,nand);
             c=true;
         }
         b=true;
