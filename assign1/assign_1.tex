@@ -1,4 +1,8 @@
 \documentclass[journal,12pt]{IEEEtran}
+\usepackage{circuitikz}
+\usepackage{tikz}
+\usetikzlibrary{shapes.gates.logic.US}
+\usetikzlibrary{circuits.ee.IEC}
 \usepackage{longtable}
 \usepackage{setspace}
 \usepackage{gensymb}
@@ -26,8 +30,6 @@
 \usepackage{enumitem}
 \usepackage{mathtools}
 \usepackage{steinmetz}
-\usepackage{tikz}
-\usepackage{circuitikz}
 \usepackage{verbatim}
 \usepackage{tfrupee}
 \usepackage[breaklinks=true]{hyperref}
@@ -99,28 +101,8 @@ columns=fullflexible
 \providecommand{\rcbrak}[1]{\ensuremath{\left.#1\right\}}}
 \theoremstyle{remark}
 \newtheorem{rem}{Remark}
-\newcommand{\sgn}{\mathop{\mathrm{sgn}}}
-\providecommand{\abs}[1]{\left\vert#1\right\vert}
-\providecommand{\res}[1]{\Res\displaylimits_{#1}} 
-\providecommand{\norm}[1]{\left\lVert#1\right\rVert}
-%\providecommand{\norm}[1]{\lVert#1\rVert}
-\providecommand{\mtx}[1]{\mathbf{#1}}
-\providecommand{\mean}[1]{E\left[ #1 \right]}
-\providecommand{\fourier}{\overset{\mathcal{F}}{ \rightleftharpoons}}
-%\providecommand{\hilbert}{\overset{\mathcal{H}}{ \rightleftharpoons}}
-\providecommand{\system}{\overset{\mathcal{H}}{ \longleftrightarrow}}
-	%\newcommand{\solution}[2]{\textbf{Solution:}{#1}}
-\newcommand{\solution}{\noindent \textbf{Solution: }}
-\newcommand{\cosec}{\,\text{cosec}\,}
 \providecommand{\dec}[2]{\ensuremath{\overset{#1}{\underset{#2}{\gtrless}}}}
 \newcommand{\myvec}[1]{\ensuremath{\begin{pmatrix}#1\end{pmatrix}}}
-\newcommand{\mydet}[1]{\ensuremath{\begin{vmatrix}#1\end{vmatrix}}}
-\numberwithin{equation}{subsection}
-\makeatletter
-\@addtoreset{figure}{problem}
-\makeatother
-\let\StandardTheFigure\thefigure
-\let\vec\mathbf
 \renewcommand{\thefigure}{\theproblem}
 \def\putbox#1#2#3{\makebox[0in][l]{\makebox[#1][l]{}\raisebox{\baselineskip}[0in][0in]{\raisebox{#2}[0in][0in]{#3}}}}
      \def\rightbox#1{\makebox[0in][r]{#1}}
@@ -188,4 +170,27 @@ The truth table corresponding to the given expression:
 \begin{align}
     \overline{A}+\overline{B}.C=\overline{\overline{\overline{A}+\overline{B}.C}}=\overline{\overline{\overline{A}}.(\overline{\overline{B}.C})}=\overline{A.(\overline{\overline{B}.C})}
 \end{align}
+\newpage
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture}[]
+    \node (A) at (0,4.5) {$A$};
+    \node (B) at (0,2.7) {$B$};
+    \node (C) at (0,0.7) {$C$};
+    \node[nand gate US, minimum size=32pt, draw, logic gate inputs=nn] at ($(A) + (7.5, -0.2)$) (nand1) {};
+    \node[nand gate US, minimum size=32pt, draw, logic gate inputs=nn] at ($(A) + (2, -1.8)$) (nand2) {};
+     \node[nand gate US, minimum size=32pt, draw, logic gate inputs=nn] at ($(A) + (4.5, -3.7)$) (nand3) {};
+     
+    \draw (B.east) - ++(right:5mm) |- (nand2.input 1);
+    \draw (B.east) - ++(right:5mm) |- (nand2.input 2);
+    \draw (A) -- ([xshift=0.2cm]A) |- (nand1.input 1);
+
+    \draw (nand2.output) -- node[above]{$\overline{B}$} ([xshift=0.2cm]nand2.output) |- (nand3.input 1);
+    \draw (C) -- ([xshift=0.2cm]C) |- (nand3.input 2);
+    \draw (nand3.output) -- node[above]{$\overline{\overline{B}.C}$}([xshift=0.9cm]nand3.output) |- (nand1.input 2);
+    \draw (nand1.output) -- node[above]{$\overline{A.(\overline{\overline{B}.C})}$} ($(nand1) + (2, 0)$);
+    \end{tikzpicture}
+    \caption{Logic circuit using NAND logic}
+    \label{fig:NAND logic ckt}
+\end{figure}
 \end{document}
